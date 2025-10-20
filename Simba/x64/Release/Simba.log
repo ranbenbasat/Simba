@@ -1,0 +1,136 @@
+﻿  defs.cpp
+C:\Users\supgo\source\repos\Simba\defs.cpp(62,12): warning C4244: 'initializing': conversion from 'uint64_t' to 'int', possible loss of data
+C:\Users\supgo\source\repos\Simba\defs.cpp(94,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\supgo\source\repos\Simba\defs.cpp(95,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\supgo\source\repos\Simba\defs.cpp(96,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\supgo\source\repos\Simba\defs.cpp(103,14): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+C:\Users\supgo\source\repos\Simba\defs.cpp(158,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\supgo\source\repos\Simba\defs.cpp(159,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  main.cpp
+C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(130,32): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+      C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(130,32):
+      the template instantiation context (the oldest one first) is
+          C:\Users\supgo\source\repos\Simba\main.cpp(206,32):
+          see reference to class template instantiation 'ApproxQUIVER<true>' being compiled
+          C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(124,20):
+          while compiling class template member function 'std::vector<double,std::allocator<double>> ApproxQUIVER<true>::calcQuantizationValues(uint32_t)'
+              C:\Users\supgo\source\repos\Simba\main.cpp(207,31):
+              see the first reference to 'ApproxQUIVER<true>::calcQuantizationValues' in 'main'
+  
+C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(153,27): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+  
+C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(174,40): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+      C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(174,40):
+      the template instantiation context (the oldest one first) is
+          C:\Users\supgo\source\repos\Simba\main.cpp(170,38):
+          see reference to class template instantiation 'ExactQUIVER<false,true>' being compiled
+          C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(152,20):
+          while compiling class template member function 'std::vector<double,std::allocator<double>> ExactQUIVER<false,true>::calcQuantizationValues(uint32_t)'
+              C:\Users\supgo\source\repos\Simba\main.cpp(171,31):
+              see the first reference to 'ExactQUIVER<false,true>::calcQuantizationValues' in 'main'
+  
+C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(180,40): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+  
+C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(186,36): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+  
+C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(217,31): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+  
+C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(242,31): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+  
+C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(193,29): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+      C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(193,29):
+      the template instantiation context (the oldest one first) is
+          C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(179,10):
+          while compiling class template member function 'void ApproxQUIVER<true>::preprocess(void)'
+              C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(42,19):
+              see the first reference to 'ApproxQUIVER<true>::preprocess' in 'ApproxQUIVER<true>::ApproxQUIVER'
+              C:\Users\supgo\source\repos\Simba\main.cpp(206,35):
+              see the first reference to 'ApproxQUIVER<true>::ApproxQUIVER' in 'main'
+  
+C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(207,29): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(296,36): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+      C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(296,36):
+      the template instantiation context (the oldest one first) is
+          C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(291,10):
+          while compiling class template member function 'void ExactQUIVER<false,true>::preprocess(void)'
+              C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(40,19):
+              see the first reference to 'ExactQUIVER<false,true>::preprocess' in 'ExactQUIVER<false,true>::ExactQUIVER'
+              C:\Users\supgo\source\repos\Simba\main.cpp(170,41):
+              see the first reference to 'ExactQUIVER<false,true>::ExactQUIVER' in 'main'
+  
+C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(307,36): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+  
+C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(107,39): warning C4018: '<=': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+      C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(107,39):
+      the template instantiation context (the oldest one first) is
+          C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(64,10):
+          while compiling class template member function 'void ApproxQUIVER<true>::_smawk(const uint32_t *,const uint32_t *,int,int,uint32_t)'
+              C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(60,15):
+              see the first reference to 'ApproxQUIVER<true>::_smawk' in 'ApproxQUIVER<true>::smawk'
+              C:\Users\supgo\source\repos\Simba\ApproxQUIVER.h(139,18):
+              see the first reference to 'ApproxQUIVER<true>::smawk' in 'ApproxQUIVER<true>::calcQuantizationValues'
+              C:\Users\supgo\source\repos\Simba\main.cpp(207,31):
+              see the first reference to 'ApproxQUIVER<true>::calcQuantizationValues' in 'main'
+  
+C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(126,39): warning C4018: '<=': signed/unsigned mismatch
+  (compiling source file 'main.cpp')
+      C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(126,39):
+      the template instantiation context (the oldest one first) is
+          C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(71,10):
+          while compiling class template member function 'void ExactQUIVER<false,true>::_smawk(const uint32_t *,const uint32_t *,int,int,uint32_t)'
+              C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(63,15):
+              see the first reference to 'ExactQUIVER<false,true>::_smawk' in 'ExactQUIVER<false,true>::smawk'
+              C:\Users\supgo\source\repos\Simba\ExactQUIVER.h(197,22):
+              see the first reference to 'ExactQUIVER<false,true>::smawk' in 'ExactQUIVER<false,true>::calcQuantizationValues'
+              C:\Users\supgo\source\repos\Simba\main.cpp(171,31):
+              see the first reference to 'ExactQUIVER<false,true>::calcQuantizationValues' in 'main'
+  
+  Simba.cpp
+C:\Users\supgo\source\repos\Simba\Simba.cpp(13,95): warning C4244: '=': conversion from '__int64' to '_Ty', possible loss of data
+C:\Users\supgo\source\repos\Simba\Simba.cpp(13,95): warning C4244:         with
+C:\Users\supgo\source\repos\Simba\Simba.cpp(13,95): warning C4244:         [
+C:\Users\supgo\source\repos\Simba\Simba.cpp(13,95): warning C4244:             _Ty=int
+C:\Users\supgo\source\repos\Simba\Simba.cpp(13,95): warning C4244:         ]
+C:\Users\supgo\source\repos\Simba\Simba.cpp(19,105): warning C4244: '=': conversion from '__int64' to '_Ty', possible loss of data
+C:\Users\supgo\source\repos\Simba\Simba.cpp(19,105): warning C4244:         with
+C:\Users\supgo\source\repos\Simba\Simba.cpp(19,105): warning C4244:         [
+C:\Users\supgo\source\repos\Simba\Simba.cpp(19,105): warning C4244:             _Ty=int
+C:\Users\supgo\source\repos\Simba\Simba.cpp(19,105): warning C4244:         ]
+C:\Users\supgo\source\repos\Simba\Simba.cpp(25,109): warning C4244: '=': conversion from '__int64' to '_Ty', possible loss of data
+C:\Users\supgo\source\repos\Simba\Simba.cpp(25,109): warning C4244:         with
+C:\Users\supgo\source\repos\Simba\Simba.cpp(25,109): warning C4244:         [
+C:\Users\supgo\source\repos\Simba\Simba.cpp(25,109): warning C4244:             _Ty=int
+C:\Users\supgo\source\repos\Simba\Simba.cpp(25,109): warning C4244:         ]
+C:\Users\supgo\source\repos\Simba\Simba.cpp(39,115): warning C4244: '=': conversion from '__int64' to '_Ty', possible loss of data
+C:\Users\supgo\source\repos\Simba\Simba.cpp(39,115): warning C4244:         with
+C:\Users\supgo\source\repos\Simba\Simba.cpp(39,115): warning C4244:         [
+C:\Users\supgo\source\repos\Simba\Simba.cpp(39,115): warning C4244:             _Ty=int
+C:\Users\supgo\source\repos\Simba\Simba.cpp(39,115): warning C4244:         ]
+C:\Users\supgo\source\repos\Simba\Simba.cpp(47,105): warning C4244: '=': conversion from '__int64' to '_Ty', possible loss of data
+C:\Users\supgo\source\repos\Simba\Simba.cpp(47,105): warning C4244:         with
+C:\Users\supgo\source\repos\Simba\Simba.cpp(47,105): warning C4244:         [
+C:\Users\supgo\source\repos\Simba\Simba.cpp(47,105): warning C4244:             _Ty=int
+C:\Users\supgo\source\repos\Simba\Simba.cpp(47,105): warning C4244:         ]
+C:\Users\supgo\source\repos\Simba\Simba.cpp(58,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\supgo\source\repos\Simba\Simba.cpp(82,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\supgo\source\repos\Simba\Simba.cpp(132,66): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\supgo\source\repos\Simba\Simba.cpp(489,15): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+C:\Users\supgo\source\repos\Simba\Simba.cpp(507): warning C4715: 'Simba::calcQuantizationValues': not all control paths return a value
+  All 651 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Simba.vcxproj -> C:\Users\supgo\source\repos\Simba\x64\Release\Simba.exe

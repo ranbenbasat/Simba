@@ -1,0 +1,10 @@
+python_bindings.cpp
+setup.py
+../../Simba.cpp
+../../defs.cpp
+../../Simba.cpp
+../../defs.cpp
+simba_cpp.egg-info/PKG-INFO
+simba_cpp.egg-info/SOURCES.txt
+simba_cpp.egg-info/dependency_links.txt
+simba_cpp.egg-info/top_level.txt
