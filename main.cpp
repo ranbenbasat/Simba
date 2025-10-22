@@ -15,23 +15,16 @@ int main()
         default_random_engine generator;
         generator.seed(42);
 
-
-        int n = 1 << 16;
+        int n = 1 << 20;
 
         int s = 4;
-        int M = -1;
-        int M_Simba_for_QUIVER_Initialization = 1000;
-        int M_Simba = -1;
+        int m_QUIVER = 1000;
+        int M_QUIVER_for_Simba_Initialization = 1000;
         int ell = 4;
         int iters = 10000000;
 
-
-        bool run_ExactQUIVER = false;
-        bool run_WeightedExactQUIVER = false;
-        bool run_AccelQUIVER = false;
-
-        bool run_ApproxQUIVER = false;
-        bool run_WeightedApproxQUIVER = false;
+        bool run_QUIVER = true;
+        bool run_ApxQUIVER = true;
 
 
         bool run_Simba = true;
@@ -42,22 +35,21 @@ int main()
         auto stop = chrono::high_resolution_clock::now();
 
         bool debug = false;
-        bool truncate = false;
-        double T_Truncate = 3.097;
+		bool truncate = false;     // For optimizing the tables for QUIC-FL
+        double T_Truncate = 3.097; // Default value for QUIC-FL
         int bin_iters = 2;
         double bin_iters_increase_threshold = .99;
         double stopping_threshold = .999;
 
-        if (truncate) {
+		if (truncate) {             // For optimizing the tables for QUIC-FL, this is an offline computation, and we can thus spend more time optimizing
             bin_iters = 4;
             bin_iters_increase_threshold = .999;
             stopping_threshold = .99999;
         }
-        string quantype = "Histogram";
 
         normal_distribution<double> distribution(0.0, 1);
-        vector<double> vec(n);
-        vector<double> svec;
+        vector<double> unsorted_X(n);
+        vector<double> X;
         int idx = -1;
         double norm = 0;
 
@@ -65,158 +57,95 @@ int main()
             double number = distribution(generator);
             norm += number * number;
             if (!truncate || (number < T_Truncate && number > -T_Truncate)) {
-                vec[++idx] = number;
+                unsorted_X[++idx] = number;
             }
         }
         if (truncate) {
             n = idx + 1;
         }
-        vec.resize(idx + 1);
-        svec.resize(idx + 1);
+        unsorted_X.resize(idx + 1);
+        X.resize(idx + 1);
         cout << "norm = " << norm << endl;
 
-
         start = chrono::high_resolution_clock::now();
-        partial_sort_copy(vec.begin(), vec.end(), svec.begin(), svec.end());
+        partial_sort_copy(unsorted_X.begin(), unsorted_X.end(), X.begin(), X.end());
         stop = chrono::high_resolution_clock::now();
         auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
         cout << "partial_sort_copy time: " << duration.count() / 1000 << " ms" << endl;
 
-
-        double eps = 1;
-
         double vnmse;
 
-        vector<double> W(n, 1);
-        for (int i = 0; i < n; ++i) {
-            W[i] = 1; // to compare with unweighted version
-        }
-        if (run_ExactQUIVER) {
+        if (run_QUIVER) {
             start = chrono::high_resolution_clock::now();
-            ExactQUIVER<false, false> eq(svec.data(), (uint32_t)n, nullptr);
-            auto quant_values = eq.calcQuantizationValues(s);
+            ExactQUIVER<false, true> aeq(X.data(), (uint32_t)n, nullptr);
+            auto Q = aeq.calcQuantizationValues(s);
             stop = chrono::high_resolution_clock::now();
 
-            vnmse = sq_vnmse(svec, quant_values, nullptr);
+            vnmse = sq_vnmse(X, Q, nullptr);
 
-            cout << "ExactQUIVER: ";
+            cout << "QUIVER Q: ";
             cout << "[";
             for (int i = 0; i < s; ++i) {
-                cout << quant_values[i] << ", ";
+                cout << Q[i] << ", ";
             }
 
             cout << "], vnmse = " << vnmse << endl;
             auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
-            cout << "ExactQUIVER time: " << duration.count() / 1000 << " ms" << endl;
+            cout << "QUIVER time: " << duration.count() / 1000 << " ms" << endl;
         }
-        if (run_WeightedExactQUIVER) {
+        if (run_ApxQUIVER) {
             start = chrono::high_resolution_clock::now();
-            ExactQUIVER<true, false> eq(svec.data(), (uint32_t)n, W.data());
-            auto quant_values = eq.calcQuantizationValues(s);
+            ApproxQUIVER<false> taq(X.data(), (uint32_t)n, nullptr, m_QUIVER);
+            auto Q = taq.calcQuantizationValues(s);
             stop = chrono::high_resolution_clock::now();
 
-            vnmse = sq_vnmse(svec, quant_values, &W);
+            vnmse = sq_vnmse(X, Q, nullptr);
 
-            cout << "WeightedExactQUIVER: ";
+            cout << "ApxQUIVER Q: ";
             cout << "[";
             for (int i = 0; i < s; ++i) {
-                cout << quant_values[i] << ", ";
+                cout << Q[i] << ", ";
             }
 
             cout << "], vnmse = " << vnmse << endl;
             auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
-            cout << "WeightedExactQUIVER time: " << duration.count() / 1000 << " ms" << endl;
-        }
-        if (run_AccelQUIVER) {
-            start = chrono::high_resolution_clock::now();
-            ExactQUIVER<false, true> aeq(svec.data(), (uint32_t)n, nullptr);
-            auto quant_values = aeq.calcQuantizationValues(s);
-            stop = chrono::high_resolution_clock::now();
-
-            vnmse = sq_vnmse(svec, quant_values, nullptr);
-
-            cout << "AccelQUIVER: ";
-            cout << "[";
-            for (int i = 0; i < s; ++i) {
-                cout << quant_values[i] << ", ";
-            }
-
-            cout << "], vnmse = " << vnmse << endl;
-            auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
-            cout << "AccelQUIVER time: " << duration.count() / 1000 << " ms" << endl;
-        }
-        if (run_ApproxQUIVER) {
-            start = chrono::high_resolution_clock::now();
-            ApproxQUIVER<false> taq(svec.data(), (uint32_t)n, nullptr, M);
-            auto quant_values = taq.calcQuantizationValues(s);
-            stop = chrono::high_resolution_clock::now();
-
-            vnmse = sq_vnmse(svec, quant_values, nullptr);
-
-            cout << "ApproxQUIVER: ";
-            cout << "[";
-            for (int i = 0; i < s; ++i) {
-                cout << quant_values[i] << ", ";
-            }
-
-            cout << "], vnmse = " << vnmse << endl;
-            auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
-            cout << "ApproxQUIVER time: " << duration.count() / 1000 << " ms" << endl;
-        }
-        if (run_WeightedApproxQUIVER) {
-            start = chrono::high_resolution_clock::now();
-            ApproxQUIVER<true> taq(svec.data(), (uint32_t)n, W.data(), M);
-            auto quant_values = taq.calcQuantizationValues(s);
-            stop = chrono::high_resolution_clock::now();
-
-            vnmse = sq_vnmse(svec, quant_values, &W);
-
-            cout << "WeightedApproxQUIVER: ";
-            cout << "[";
-            for (int i = 0; i < s; ++i) {
-                cout << quant_values[i] << ", ";
-            }
-
-            cout << "], vnmse = " << vnmse << endl;
-            auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
-            cout << "WeightedApproxQUIVER time: " << duration.count() / 1000 << " ms" << endl;
+            cout << "ApxQUIVER time: " << duration.count() / 1000 << " ms" << endl;
         }
         if (run_Simba) {
             start = chrono::high_resolution_clock::now();
             Simba As;
-            vector<double> initial_levels;
-            if (M_Simba_for_QUIVER_Initialization == -1) {
-                ExactQUIVER<false, true> eq(svec.data(), (uint32_t)n, nullptr);
-                initial_levels = eq.calcQuantizationValues(s);
+            vector<double> initial_Q;
+            if (M_QUIVER_for_Simba_Initialization == -1) {
+                ExactQUIVER<false, true> eq(X.data(), (uint32_t)n, nullptr);
+                initial_Q = eq.calcQuantizationValues(s);
             }
             else {
-                ApproxQUIVER<false> taq(svec.data(), (uint32_t)n, nullptr, M_Simba_for_QUIVER_Initialization);
-                initial_levels = taq.calcQuantizationValues(s);
-                vnmse = sq_vnmse(svec, initial_levels, nullptr);
-                //cout << "Initial levels vnmse = " << vnmse << endl;
+                ApproxQUIVER<false> taq(X.data(), (uint32_t)n, nullptr, M_QUIVER_for_Simba_Initialization);
+                initial_Q = taq.calcQuantizationValues(s);
+                vnmse = sq_vnmse(X, initial_Q, nullptr);
             }
-            auto quant_values_array = As.calcQuantizationValues(svec.data(), svec.size(), s, ell, iters, bin_iters, bin_iters_increase_threshold, stopping_threshold, M_Simba, debug, quantype, initial_levels.data(), log_cost_fn);
+            auto Q = As.calcQuantizationValues(X.data(), X.size(), s, ell, iters, bin_iters, bin_iters_increase_threshold, stopping_threshold, debug, initial_Q.data(), log_cost_fn);
             stop = chrono::high_resolution_clock::now();
 
-            std::vector<std::vector<double>> quant_values;
+			std::vector<std::vector<double>> vec_Q; // reformat Q for calc_SR_vNMSE
             for (int i = 0; i < ell; ++i) {
                 std::vector<double> v;
                 for (int j = 0; j < s; ++j) {
-                    v.push_back(quant_values_array[i][j]);
+                    v.push_back(Q[i][j]);
                 }
-                quant_values.push_back(v);
+                vec_Q.push_back(v);
             }
 
             if (truncate) {
-                vnmse = calc_SR_vNMSE(svec, quant_values, norm);
+                vnmse = calc_SR_vNMSE(X, vec_Q, norm);
             }
             else {
-                vnmse = calc_SR_vNMSE(svec, quant_values);
+                vnmse = calc_SR_vNMSE(X, vec_Q);
             }
 
-            cout << "No histogram QUIVER_initialized KoveSimba: ";
-            cout << "[";
-            for (auto v : quant_values) {
+            cout << "Simba Q: ";
+            cout << "[" << endl;
+            for (auto v : vec_Q) {
                 cout << "[";
                 for (auto u : v) {
                     cout << u << ", ";
@@ -226,9 +155,7 @@ int main()
 
             cout << "], vnmse = " << vnmse << endl;
             auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
-            cout << "No histogram QUIVER_initialized KoveSimba time: " << duration.count() / 1000 << " ms" << endl;
-
-            //exit(1);
+            cout << "Simba time: " << duration.count() / 1000 << " ms" << endl;
         }   
     }
 

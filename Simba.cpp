@@ -1,31 +1,31 @@
 #include "Simba.h"
 
 /*
-* Calculate the thresholds based on the current levels. If changed_H and changed_X are -1, calculate all thresholds from scratch, otherwise only update the thresholds affected by the change in levels[changed_H][changed_X].
+* Calculate the thresholds based on the current levels. If changed_h and changed_q are -1, calculate all thresholds from scratch, otherwise only update the thresholds affected by the change in levels[changed_h][changed_q].
 */
-void Simba::calcThresholds(int changed_H, int changed_X)
+void Simba::calcThresholds(int changed_h, int changed_q)
 {
-    if (changed_X == -1)
+    if (changed_q == -1)
     {
         double T = 0;
         for (int j = 1; j < ell; ++j) {
-            T += levels[j][0];
+            T += Q[j][0];
         }
-        T += levels[0][1];
+        T += Q[0][1];
         //new_threshold_indices[0] = upper_bound(svec, svec + d, T / ell) - svec - 1;
-        new_threshold_indices[0] = upper_bound(svec, svec + d, T * one_plus_eps / ell) - svec - 1; // multiplying by (1+eps) to avoid numerical errors. Don't remove!
+        new_threshold_indices[0] = upper_bound(X, X + d, T * one_plus_eps / ell) - X - 1; // multiplying by (1+eps) to avoid numerical errors. Don't remove!
         threshold_values[0] = T / ell;
 
         int idx = 0;
-        for (int H = 1; H < ell; ++H) {
-            T += levels[H][1] - levels[H][0];
-            new_threshold_indices[++idx] = (upper_bound(svec, svec + d, T * one_plus_eps / ell) - svec) - 1;
+        for (int h = 1; h < ell; ++h) {
+            T += Q[h][1] - Q[h][0];
+            new_threshold_indices[++idx] = (upper_bound(X, X + d, T * one_plus_eps / ell) - X) - 1;
             threshold_values[idx] = T / ell;
         }
-        for (int X = 1; X < s - 1; ++X) {
-            for (int H = 0; H < ell; ++H) {
-                T += levels[H][X + 1] - levels[H][X];
-                new_threshold_indices[++idx] = (upper_bound(svec, svec + d, T * one_plus_eps / ell) - svec) - 1;
+        for (int q = 1; q < s - 1; ++q) {
+            for (int h = 0; h < ell; ++h) {
+                T += Q[h][q + 1] - Q[h][q];
+                new_threshold_indices[++idx] = (upper_bound(X, X + d, T * one_plus_eps / ell) - X) - 1;
                 threshold_values[idx] = T / ell;
             }
         }
@@ -33,29 +33,28 @@ void Simba::calcThresholds(int changed_H, int changed_X)
     }
     else
     {
-        int changed_j = changed_H + changed_X * ell;
+        int changed_j = changed_h + changed_q * ell;
         int first_changed_i = changed_j > ell ? changed_j - (ell - 1) : 1;
         double T = 0;
         for (int j = first_changed_i; j < first_changed_i + ell; ++j) {
-            T += levels[j % ell][j / ell];
+            T += Q[j % ell][j / ell];
         }
-        new_threshold_indices[first_changed_i - 1] = (upper_bound(svec, svec + d, T * one_plus_eps / ell) - svec) - 1;
+        new_threshold_indices[first_changed_i - 1] = (upper_bound(X, X + d, T * one_plus_eps / ell) - X) - 1;
         new_threshold_indices[first_changed_i - 1] = new_threshold_indices[first_changed_i - 1] < 0 ? 0 : new_threshold_indices[first_changed_i - 1];
         threshold_values[first_changed_i - 1] = T / ell;
         int last_i = changed_j < ell * (s - 1) - 1 ? changed_j : ell * (s - 1) - 1;
         for (int i = first_changed_i + 1; i <= last_i; ++i) {
-            int H = (i - 1) % ell;
-            int X = (i - 1) / ell;
-            T += levels[H][X + 1] - levels[H][X];
-            new_threshold_indices[i - 1] = (upper_bound(svec, svec + d, T * one_plus_eps / ell) - svec) - 1;
+            int h = (i - 1) % ell;
+            int q = (i - 1) / ell;
+            T += Q[h][q + 1] - Q[h][q];
+            new_threshold_indices[i - 1] = (upper_bound(X, X + d, T * one_plus_eps / ell) - X) - 1;
             threshold_values[i - 1] = T / ell;
         }
         new_threshold_indices[ell * (s - 1) - 1] = d - 1;
-        threshold_values[ell * (s - 1) - 1] = maxD;
+        threshold_values[ell * (s - 1) - 1] = maxX;
     }
     return;
 }
-
 
 void Simba::calcBetas() {
     int N = new_threshold_indices.size();
@@ -63,9 +62,9 @@ void Simba::calcBetas() {
 
     // compute betai[0] from scratch
     double sum = 0;
-    for (int j = 0; j < ell; ++j) {
-        int idx = (ell - j) / ell;  // same as (0 + ell - j) / ell
-        double v = levels[j][idx];
+    for (int h = 0; h < ell; ++h) {
+        int idx = (ell - h) / ell;  // same as (0 + ell - j) / ell
+        double v = Q[h][idx];
         sum += v * v;
     }
     betai[0] = sum;
@@ -75,20 +74,23 @@ void Simba::calcBetas() {
         int j0 = (i + 1) % ell;
         int old_idx = (i + ell - j0) / ell;
         int new_idx = (i + 1 + ell - j0) / ell;
-        double old_v = levels[j0][old_idx];
-        double new_v = levels[j0][new_idx];
+        double old_v = Q[j0][old_idx];
+        double new_v = Q[j0][new_idx];
         betai[i + 1] = betai[i] + new_v * new_v - old_v * old_v;
     }
 }
 
-void Simba::updateBetas(int j, int q, double oldval, double newval) {
+/*
+* Update betas after changing levels[j][q] from oldval to newval.
+*/
+void Simba::updateBetas(int h, int q, double oldval, double newval) {
     int N = new_threshold_indices.size();
     // change in the squared term
     double diff = newval * newval - oldval * oldval;
 
     // solve (i + ell - j) / ell == q  =>  (q-1)*ell + j <= i < q*ell + j
-    int i_start = (q - 1) * ell + j;
-    int i_end = q * ell + j;
+    int i_start = (q - 1) * ell + h;
+    int i_end = q * ell + h;
 
     // clamp to valid range
     if (i_start < 0)    i_start = 0;
@@ -100,13 +102,15 @@ void Simba::updateBetas(int j, int q, double oldval, double newval) {
     }
 }
 
-
+/*
+* Calculate MSEi for interval i.
+*/
 double Simba::calc_MSEi(int i) const {
-    int j_star = i % ell;
-    int R_idx = (i + ell - j_star) / ell;
+    int h_star = i % ell;
+    int R_idx = (i + ell - h_star) / ell;
     int L_idx = R_idx - 1;
-    double Ri = levels[j_star][R_idx];
-    double Li = levels[j_star][L_idx];
+    double Ri = Q[h_star][R_idx];
+    double Li = Q[h_star][L_idx];
     double Ti = threshold_values[i];
     double Ni = (i == 0) ? new_threshold_indices[i] + 1 : new_threshold_indices[i] - new_threshold_indices[i - 1];
     double betaival = betai[i];
@@ -114,9 +118,12 @@ double Simba::calc_MSEi(int i) const {
     return (Ri + Li) * pcumsum + (betaival / ell - Ti * (Ri + Li)) * Ni;
 }
 
-double Simba::cost(int changed_H = -1, int changed_X = -1) {
-    calcThresholds(changed_H, changed_X);
-    if (changed_X == -1) {
+/*
+* Calculate the MSE cost. If changed_h and changed_q are -1, calculate from scratch, otherwise only update the affected intervals.
+*/
+double Simba::MSE(int changed_h = -1, int changed_q = -1) {
+    calcThresholds(changed_h, changed_q);
+    if (changed_q == -1) {
         double total_cost = 0;
         calcBetas();
         for (int i = 0; i < new_threshold_indices.size(); ++i) {
@@ -126,7 +133,7 @@ double Simba::cost(int changed_H = -1, int changed_X = -1) {
         lastMSE = total_cost - sos;
     }
     else {
-        int level_idx = changed_H + changed_X * ell;
+        int level_idx = changed_h + changed_q * ell;
         int min_changed_treshold_idx = level_idx - ell - 2;
         int max_changed_treshold_idx = level_idx + 1;
         if (min_changed_treshold_idx < 0)
@@ -144,29 +151,18 @@ double Simba::cost(int changed_H = -1, int changed_X = -1) {
 
 void Simba::preprocess()
 {
-    minD = svec[0];
-    maxD = svec[d - 1];
+    minX = X[0];
+    maxX = X[d - 1];
     pts_cumsum.resize(d);
-    pts_cumsum[0] = minD;
-    //partial_sum(svec.begin(), svec.end(), pts_cumsum.begin()); is actually slower ?!
-    sos = minD * minD;
-    //auto start = chrono::high_resolution_clock::now();
+    pts_cumsum[0] = minX;
+    sos = minX * minX;
     for (int i = 1; i < d; ++i) {
-        pts_cumsum[i] = pts_cumsum[i - 1] + svec[i];
-        sos += svec[i] * svec[i];
+        pts_cumsum[i] = pts_cumsum[i - 1] + X[i];
+        sos += X[i] * X[i];
     }
-    //auto end = chrono::high_resolution_clock::now();
-    //cout << "Preprocessing took " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms." << endl;
 }
 
-
-
-
-//////////////////////////////////
-
-
-
-vector<vector<double>> Simba::calcQuantizationValuesSR(double* initial_levels, string log_cost)
+vector<vector<double>> Simba::_calcQuantizationValues(double* initial_levels, string log_cost)
 {
     if (log_cost != "") {
         cout << "WARNING: Calculating quantization values with log_cost enabled." << endl;
@@ -178,34 +174,16 @@ vector<vector<double>> Simba::calcQuantizationValuesSR(double* initial_levels, s
 
     preprocess();
 
-    levels.resize(ell);
+    Q.resize(ell);
     if (initial_levels) {
-        for (int i = 0; i < ell; ++i) {
-            levels[i].resize(s);
+        for (int h = 0; h < ell; ++h) {
+            Q[h].resize(s);
             for (int j = 0; j < s; ++j)
-                levels[i][j] = initial_levels[j];
+                Q[h][j] = initial_levels[j];
         }
     }
     else {
-        vector<double> lin(s * ell);
-        for (int i = 0; i < s * ell - 2; ++i) {
-            lin[i + 1] = svec[(int)(((i + .5) * d) / (s * ell - 2))];
-        }
-        double first = ell * minD;
-        for (int i = 0; i < ell - 1; ++i) {
-            first -= lin[i + 1];
-        }
-        lin[0] = first;
-        double last = ell * maxD;
-        for (int i = 0; i < ell - 1; ++i) {
-            last -= lin[i + ell];
-        }
-        lin[s * ell - 1] = last;
-        for (int i = 0; i < ell; ++i) {
-            levels[i].resize(s);
-            for (int j = 0; j < s; ++j)
-                levels[i][j] = lin[i + j * ell];
-        }
+        throw runtime_error("Initial levels must be provided.");
     }
 
     vector<pair<int, int>> changed_levels(s * ell - 2);
@@ -233,29 +211,24 @@ vector<vector<double>> Simba::calcQuantizationValuesSR(double* initial_levels, s
     int totally_stuck = 0;
     double _cost = 0;
 
-
-    //double orig_cost = cost();
-    //min_required_improvement = orig_cost * (1 - stopping_threshold);
-    _cost = cost();
+    _cost = MSE();
     min_required_improvement = _cost * (1 - stopping_threshold);
     vector<pair<double, int>> cost_vec;
 
-
     double lo, hi, mid, mid_plus_eps, cost_mid, cost_mid_plus_eps;
     int iter_num = 0;
-    int H = 1, X = 0;
+    int h = 1, q = 0;
     bool last_changed_was_hi;
     for (; iter_num < iters; ++iter_num) {
         int remaining_bin_iters = bin_iters;
-        _cost = cost(H, X);
-        H = changed_levels[iter_num % (s * ell - 2)].first;
-        X = changed_levels[iter_num % (s * ell - 2)].second;
-
+        _cost = MSE(h, q);
+        h = changed_levels[iter_num % (s * ell - 2)].first;
+        q = changed_levels[iter_num % (s * ell - 2)].second;
 
         if ((log_cost != "") && (iter_num % 1 == 0)) {
             cost_vec.push_back(make_pair(_cost, totally_stuck));
         }
-        double orig_val = levels[H][X];
+        double orig_val = Q[h][q];
 
         if (iter_num % (s * ell) == 0) {
             if (debug)
@@ -280,27 +253,27 @@ vector<vector<double>> Simba::calcQuantizationValuesSR(double* initial_levels, s
             old_cost = min(_cost, old_cost);
         }
 
-        if (H == 0) {
-            lo = levels[ell - 1][X - 1];
+        if (h == 0) {
+            lo = Q[ell - 1][q - 1];
         }
         else {
-            lo = levels[H - 1][X];
-            if (X == 0) {
-                lo = max(lo, levels[H][X] - (levels[1][0] - levels[0][0]));
-                if (H == 1) {
-                    lo = max(lo, (levels[1][0] + levels[0][0]) / 2);
+            lo = Q[h - 1][q];
+            if (q == 0) {
+                lo = max(lo, Q[h][q] - (Q[1][0] - Q[0][0]));
+                if (h == 1) {
+                    lo = max(lo, (Q[1][0] + Q[0][0]) / 2);
                 }
             }
         }
-        if (H == ell - 1) {
-            hi = levels[0][X + 1];
+        if (h == ell - 1) {
+            hi = Q[0][q + 1];
         }
         else {
-            hi = levels[H + 1][X];
-            if (X == s - 1) {
-                hi = min(hi, levels[H][X] + (levels[ell - 1][s - 1] - levels[ell - 2][s - 1]));
-                if (H == ell - 2) {
-                    hi = min(hi, (levels[ell - 1][s - 1] + levels[ell - 2][s - 1]) / 2);
+            hi = Q[h + 1][q];
+            if (q == s - 1) {
+                hi = min(hi, Q[h][q] + (Q[ell - 1][s - 1] - Q[ell - 2][s - 1]));
+                if (h == ell - 2) {
+                    hi = min(hi, (Q[ell - 1][s - 1] + Q[ell - 2][s - 1]) / 2);
                 }
             }
         }
@@ -310,46 +283,45 @@ vector<vector<double>> Simba::calcQuantizationValuesSR(double* initial_levels, s
         mid = (hi + lo) / 2;
         mid_plus_eps = mid + (hi - mid) * 1e-5;
         while (--remaining_bin_iters >= 0) {
-            updateBetas(H, X, levels[H][X], mid);
-            levels[H][X] = mid;
-            if (X == 0) {
-                double res = ell * minD;
+            updateBetas(h, q, Q[h][q], mid);
+            Q[h][q] = mid;
+            if (q == 0) {
+                double res = ell * minX;
                 for (int i = 1; i < ell; ++i) {
-                    res -= levels[i][0];
+                    res -= Q[i][0];
                 }
-                updateBetas(0, 0, levels[0][0], res);
-                levels[0][0] = res;
+                updateBetas(0, 0, Q[0][0], res);
+                Q[0][0] = res;
             }
-            else if (X == s - 1) {
-                double res = ell * maxD;
+            else if (q == s - 1) {
+                double res = ell * maxX;
                 for (int i = 0; i < ell - 1; ++i) {
-                    res -= levels[i][s - 1];
+                    res -= Q[i][s - 1];
                 }
-                updateBetas(ell - 1, s - 1, levels[ell - 1][s - 1], res);
-                levels[ell - 1][s - 1] = res;
+                updateBetas(ell - 1, s - 1, Q[ell - 1][s - 1], res);
+                Q[ell - 1][s - 1] = res;
             }
-            cost_mid = cost(H, X);
+            cost_mid = MSE(h, q);
 
-            updateBetas(H, X, levels[H][X], mid_plus_eps);
-            levels[H][X] = mid_plus_eps;
-            if (X == 0) {
-                // this can be optimized!
-                double res = ell * minD;
+            updateBetas(h, q, Q[h][q], mid_plus_eps);
+            Q[h][q] = mid_plus_eps;
+            if (q == 0) {
+                double res = ell * minX;
                 for (int i = 1; i < ell; ++i) {
-                    res -= levels[i][0];
+                    res -= Q[i][0];
                 }
-                updateBetas(0, 0, levels[0][0], res);
-                levels[0][0] = res;
+                updateBetas(0, 0, Q[0][0], res);
+                Q[0][0] = res;
             }
-            else if (X == s - 1) {
-                double res = ell * maxD;
+            else if (q == s - 1) {
+                double res = ell * maxX;
                 for (int i = 0; i < ell - 1; ++i) {
-                    res -= levels[i][s - 1];
+                    res -= Q[i][s - 1];
                 }
-                updateBetas(ell - 1, s - 1, levels[ell - 1][s - 1], res);
-                levels[ell - 1][s - 1] = res;
+                updateBetas(ell - 1, s - 1, Q[ell - 1][s - 1], res);
+                Q[ell - 1][s - 1] = res;
             }
-            cost_mid_plus_eps = cost(H, X);
+            cost_mid_plus_eps = MSE(h, q);
             if (cost_mid < cost_mid_plus_eps) {
                 hi = mid;
                 last_changed_was_hi = true;
@@ -362,104 +334,100 @@ vector<vector<double>> Simba::calcQuantizationValuesSR(double* initial_levels, s
             mid_plus_eps = mid + (hi - mid) * 1e-5;
         }
         double cost_lo, cost_hi;
-        //cost();
         if (last_changed_was_hi)
         {
-            updateBetas(H, X, levels[H][X], lo);
-            levels[H][X] = lo;
-            if (X == 0) {
-                // this can be optimized!
-                double res = ell * minD;
+            updateBetas(h, q, Q[h][q], lo);
+            Q[h][q] = lo;
+            if (q == 0) {
+                double res = ell * minX;
                 for (int i = 1; i < ell; ++i) {
-                    res -= levels[i][0];
+                    res -= Q[i][0];
                 }
-                updateBetas(0, 0, levels[0][0], res);
-                levels[0][0] = res;
+                updateBetas(0, 0, Q[0][0], res);
+                Q[0][0] = res;
             }
-            else if (X == s - 1) {
-                double res = ell * maxD;
+            else if (q == s - 1) {
+                double res = ell * maxX;
                 for (int i = 0; i < ell - 1; ++i) {
-                    res -= levels[i][s - 1];
+                    res -= Q[i][s - 1];
                 }
-                updateBetas(ell - 1, s - 1, levels[ell - 1][s - 1], res);
-                levels[ell - 1][s - 1] = res;
+                updateBetas(ell - 1, s - 1, Q[ell - 1][s - 1], res);
+                Q[ell - 1][s - 1] = res;
             }
-            cost_lo = cost(H, X);
+            cost_lo = MSE(h, q);
             cost_hi = cost_mid;
         }
         else
         {
-            updateBetas(H, X, levels[H][X], hi);
-            levels[H][X] = hi;
-            if (X == 0) {
+            updateBetas(h, q, Q[h][q], hi);
+            Q[h][q] = hi;
+            if (q == 0) {
                 // this can be optimized!
-                double res = ell * minD;
+                double res = ell * minX;
                 for (int i = 1; i < ell; ++i) {
-                    res -= levels[i][0];
+                    res -= Q[i][0];
                 }
-                updateBetas(0, 0, levels[0][0], res);
-                levels[0][0] = res;
+                updateBetas(0, 0, Q[0][0], res);
+                Q[0][0] = res;
             }
-            else if (X == s - 1) {
-                double res = ell * maxD;
+            else if (q == s - 1) {
+                double res = ell * maxX;
                 for (int i = 0; i < ell - 1; ++i) {
-                    res -= levels[i][s - 1];
+                    res -= Q[i][s - 1];
                 }
-                updateBetas(ell - 1, s - 1, levels[ell - 1][s - 1], res);
-                levels[ell - 1][s - 1] = res;
+                updateBetas(ell - 1, s - 1, Q[ell - 1][s - 1], res);
+                Q[ell - 1][s - 1] = res;
             }
-            cost_hi = cost(H, X);
+            cost_hi = MSE(h, q);
             cost_lo = cost_mid;
         }
 
         if ((_cost > cost_lo) || (_cost > cost_hi)) {
             double newval = (cost_lo < cost_hi) ? lo : hi;
-            updateBetas(H, X, levels[H][X], newval);
-            levels[H][X] = newval;
+            updateBetas(h, q, Q[h][q], newval);
+            Q[h][q] = newval;
         }
         else {
-            updateBetas(H, X, levels[H][X], orig_val);
-            levels[H][X] = orig_val;
+            updateBetas(h, q, Q[h][q], orig_val);
+            Q[h][q] = orig_val;
         }
-        if (X == 0) {
-            // this can be optimized!
-            double res = ell * minD;
+        if (q == 0) {
+            double res = ell * minX;
             for (int i = 1; i < ell; ++i) {
-                res -= levels[i][0];
+                res -= Q[i][0];
             }
-            updateBetas(0, 0, levels[0][0], res);
-            levels[0][0] = res;
+            updateBetas(0, 0, Q[0][0], res);
+            Q[0][0] = res;
         }
-        else if (X == s - 1) {
-            // this can be optimized!
-            double res = ell * maxD;
+        else if (q == s - 1) {
+            double res = ell * maxX;
             for (int i = 0; i < ell - 1; ++i) {
-                res -= levels[i][s - 1];
+                res -= Q[i][s - 1];
             }
-            updateBetas(ell - 1, s - 1, levels[ell - 1][s - 1], res);
-            levels[ell - 1][s - 1] = res;
+            updateBetas(ell - 1, s - 1, Q[ell - 1][s - 1], res);
+            Q[ell - 1][s - 1] = res;
         }
     }
 
     if (debug) {
-        for (int H = 0; H < ell; ++H) {
-            for (int S = 0; S < s - 1; ++S) {
+        for (int h = 0; h < ell; ++h) {
+            for (int q = 0; q < s - 1; ++q) {
                 double res = 0;
-                for (int H_prime = H + 1; H_prime < ell; ++H_prime) {
-                    res -= levels[H_prime][S];
+                for (int h_prime = h + 1; h_prime < ell; ++h_prime) {
+                    res -= Q[h_prime][q];
                 }
-                for (int H_prime = 0; H_prime < H; ++H_prime) {
-                    res -= levels[H_prime][S + 1];
+                for (int h_prime = 0; h_prime < h; ++h_prime) {
+                    res -= Q[h_prime][q + 1];
                 }
             }
         }
 
         double norm2 = 0;
         for (int i = 0; i < d; ++i) {
-            norm2 += svec[i] * svec[i];
+            norm2 += X[i] * X[i];
         }
 
-        double  __cost = cost();
+        double  __cost = MSE();
         cout << "Final cost = " << __cost << ", vNMSE = " << __cost / norm2 << endl;
     }
 
@@ -474,37 +442,27 @@ vector<vector<double>> Simba::calcQuantizationValuesSR(double* initial_levels, s
             ofs << x.first << "\t" << x.second << '\n';
     }
 
-    return levels;
+    return Q;
 }
 
-
-//////
-vector<vector<double>> Simba::calcQuantizationValues(double* svec, size_t d, int s, int q, int iters, int bin_iters, double bin_iters_increase_threshold, double stopping_threshold, int m, bool debug, string quantype, double* initial_levels, string log_cost) {
-    if ((q == 1) && (s == 2)) {
+vector<vector<double>> Simba::calcQuantizationValues(double* X, size_t d, int s, int ell, int iters, int bin_iters, double bin_iters_increase_threshold, double stopping_threshold, bool debug, double* initial_levels, string log_cost) {
+    if ((ell == 1) && (s == 2)) {
         vector<vector<double>> res(1);
         vector<double> inner(2);
-        inner[0] = svec[0];
-        inner[1] = svec[d - 1];
+        inner[0] = X[0];
+        inner[1] = X[d - 1];
         res[0] = inner;
         return res;
     }
-    this->svec = svec;
+    this->X = X;
     this->d = d;
     this->s = s;
-    this->ell = q;
+    this->ell = ell;
     this->iters = iters;
     this->bin_iters = bin_iters;
     this->bin_iters_increase_threshold = bin_iters_increase_threshold;
     this->stopping_threshold = stopping_threshold;
     this->debug = debug;
-    if (m == -1) { // no histogram
-        vector<vector<double>> res;
 
-        res = calcQuantizationValuesSR(initial_levels, log_cost);
-
-        return res;
-    }
-
-    cout << "m!= -1 is Unimplemented, use OldSimba" << endl;
-
+    return _calcQuantizationValues(initial_levels, log_cost);
 }

@@ -19,18 +19,10 @@ using namespace std;
 
 const double one_plus_eps = 1.0000000001;
 
-double sq_vnmse(vector<double>& svec, vector<double>& sqv, vector<double> *W);
+double sq_vnmse(vector<double>& X, vector<double>& Q, vector<double>* W); // Used for ASQ methods (without shared randomness)
 
-
-
-
-void newCalcGrid(double* svec, int d, int M, string type, double* grid);
-double calc_SR_vNMSE(const std::vector<double>& vec,
-	const std::vector<std::vector<double>>& sqv,
+double calc_SR_vNMSE(const std::vector<double>& X, // Used for AUQ methods (with shared randomness)
+	const std::vector<std::vector<double>>& Q,
 	double snorm = -1.0);
-
-std::vector<double> calcThresholds(const std::vector<std::vector<double>>& sqv);
-double calcNormSquared(const std::vector<double>& vec);
-
 
 #endif // !DEFS_H#pragma once
