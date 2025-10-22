@@ -17,6 +17,8 @@
 
 using namespace std;
 
+const double one_plus_eps = 1.0000000001;
+
 double sq_vnmse(vector<double>& svec, vector<double>& sqv, vector<double> *W);
 
 

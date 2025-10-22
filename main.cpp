@@ -16,13 +16,13 @@ int main()
         generator.seed(42);
 
 
-        int n = 1 << 21;
+        int n = 1 << 16;
 
-        int s = 64;
+        int s = 4;
         int M = -1;
         int M_Simba_for_QUIVER_Initialization = 1000;
         int M_Simba = -1;
-        int ell = 32;
+        int ell = 4;
         int iters = 10000000;
 
 
@@ -34,7 +34,7 @@ int main()
         bool run_WeightedApproxQUIVER = false;
 
 
-        bool run_KoveSimba = true;
+        bool run_Simba = true;
 
         string log_cost_fn = "";
 
@@ -181,7 +181,7 @@ int main()
             auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
             cout << "WeightedApproxQUIVER time: " << duration.count() / 1000 << " ms" << endl;
         }
-        if (run_KoveSimba) {
+        if (run_Simba) {
             start = chrono::high_resolution_clock::now();
             Simba As;
             vector<double> initial_levels;

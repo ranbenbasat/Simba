@@ -13,19 +13,19 @@ void Simba::calcThresholds(int changed_H, int changed_X)
         }
         T += levels[0][1];
         //new_threshold_indices[0] = upper_bound(svec, svec + d, T / ell) - svec - 1;
-        new_threshold_indices[0] = upper_bound(svec, svec + d, T * 1.0000000001 / ell) - svec - 1; // multiplying by (1+eps) to avoid numerical errors. Don't remove!
+        new_threshold_indices[0] = upper_bound(svec, svec + d, T * one_plus_eps / ell) - svec - 1; // multiplying by (1+eps) to avoid numerical errors. Don't remove!
         threshold_values[0] = T / ell;
 
         int idx = 0;
         for (int H = 1; H < ell; ++H) {
             T += levels[H][1] - levels[H][0];
-            new_threshold_indices[++idx] = (upper_bound(svec, svec + d, T * 1.0000000001 / ell) - svec) - 1;
+            new_threshold_indices[++idx] = (upper_bound(svec, svec + d, T * one_plus_eps / ell) - svec) - 1;
             threshold_values[idx] = T / ell;
         }
         for (int X = 1; X < s - 1; ++X) {
             for (int H = 0; H < ell; ++H) {
                 T += levels[H][X + 1] - levels[H][X];
-                new_threshold_indices[++idx] = (upper_bound(svec, svec + d, T * 1.0000000001 / ell) - svec) - 1;
+                new_threshold_indices[++idx] = (upper_bound(svec, svec + d, T * one_plus_eps / ell) - svec) - 1;
                 threshold_values[idx] = T / ell;
             }
         }
@@ -39,7 +39,7 @@ void Simba::calcThresholds(int changed_H, int changed_X)
         for (int j = first_changed_i; j < first_changed_i + ell; ++j) {
             T += levels[j % ell][j / ell];
         }
-        new_threshold_indices[first_changed_i - 1] = (upper_bound(svec, svec + d, T * 1.0000000001 / ell) - svec) - 1;
+        new_threshold_indices[first_changed_i - 1] = (upper_bound(svec, svec + d, T * one_plus_eps / ell) - svec) - 1;
         new_threshold_indices[first_changed_i - 1] = new_threshold_indices[first_changed_i - 1] < 0 ? 0 : new_threshold_indices[first_changed_i - 1];
         threshold_values[first_changed_i - 1] = T / ell;
         int last_i = changed_j < ell * (s - 1) - 1 ? changed_j : ell * (s - 1) - 1;
@@ -47,7 +47,7 @@ void Simba::calcThresholds(int changed_H, int changed_X)
             int H = (i - 1) % ell;
             int X = (i - 1) / ell;
             T += levels[H][X + 1] - levels[H][X];
-            new_threshold_indices[i - 1] = (upper_bound(svec, svec + d, T * 1.0000000001 / ell) - svec) - 1;
+            new_threshold_indices[i - 1] = (upper_bound(svec, svec + d, T * one_plus_eps / ell) - svec) - 1;
             threshold_values[i - 1] = T / ell;
         }
         new_threshold_indices[ell * (s - 1) - 1] = d - 1;

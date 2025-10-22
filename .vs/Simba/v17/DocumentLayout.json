@@ -3,32 +3,35 @@
   "WorkspaceRootPath": "C:\\Users\\supgo\\source\\repos\\Simba\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\defs.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:defs.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\Simba.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:Simba.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\Simba.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:Simba.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\ApproxQUIVER.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:ApproxQUIVER.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\ExactQUIVER.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:ExactQUIVER.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\defs.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:defs.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\defs.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:defs.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\Simba.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:Simba.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\2022\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.41.34120\\INCLUDE\\XUTILITY||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\ApproxQUIVER.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:ApproxQUIVER.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|C:\\Users\\supgo\\source\\repos\\Simba\\ExactQUIVER.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{23E0ED0D-E861-42A2-BC54-F8763EBB944F}|Simba.vcxproj|solutionrelative:ExactQUIVER.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,37 +41,50 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
+              "Title": "xutility",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.41.34120\\include\\xutility",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.41.34120\\include\\xutility",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.41.34120\\include\\xutility",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.41.34120\\include\\xutility",
+              "ViewState": "AgIAAF4cAAAAAAAAAAAawIYcAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-10-21T13:51:41.994Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Simba.cpp",
               "DocumentMoniker": "C:\\Users\\supgo\\source\\repos\\Simba\\Simba.cpp",
               "RelativeDocumentMoniker": "Simba.cpp",
               "ToolTip": "C:\\Users\\supgo\\source\\repos\\Simba\\Simba.cpp",
               "RelativeToolTip": "Simba.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABsAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAABPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-10-20T15:32:13.747Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Simba.h",
               "DocumentMoniker": "C:\\Users\\supgo\\source\\repos\\Simba\\Simba.h",
               "RelativeDocumentMoniker": "Simba.h",
               "ToolTip": "C:\\Users\\supgo\\source\\repos\\Simba\\Simba.h",
               "RelativeToolTip": "Simba.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAqwBEAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-10-20T15:32:01.635Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "ExactQUIVER.h",
               "DocumentMoniker": "C:\\Users\\supgo\\source\\repos\\Simba\\ExactQUIVER.h",
               "RelativeDocumentMoniker": "ExactQUIVER.h",
@@ -76,12 +92,11 @@
               "RelativeToolTip": "ExactQUIVER.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADwBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-10-20T15:31:26.628Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-20T15:31:26.628Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "ApproxQUIVER.h",
               "DocumentMoniker": "C:\\Users\\supgo\\source\\repos\\Simba\\ApproxQUIVER.h",
               "RelativeDocumentMoniker": "ApproxQUIVER.h",
@@ -89,44 +104,43 @@
               "RelativeToolTip": "ApproxQUIVER.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAOkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-10-20T15:31:16.122Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-20T15:31:16.122Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "defs.h",
               "DocumentMoniker": "C:\\Users\\supgo\\source\\repos\\Simba\\defs.h",
               "RelativeDocumentMoniker": "defs.h",
               "ToolTip": "C:\\Users\\supgo\\source\\repos\\Simba\\defs.h",
               "RelativeToolTip": "defs.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-10-20T15:30:51.543Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "defs.cpp",
               "DocumentMoniker": "C:\\Users\\supgo\\source\\repos\\Simba\\defs.cpp",
               "RelativeDocumentMoniker": "defs.cpp",
               "ToolTip": "C:\\Users\\supgo\\source\\repos\\Simba\\defs.cpp",
               "RelativeToolTip": "defs.cpp",
-              "ViewState": "AgIAAIQAAAAAAAAAAAAqwJUAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJUAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-10-20T15:30:45.89Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "main.cpp",
               "DocumentMoniker": "C:\\Users\\supgo\\source\\repos\\Simba\\main.cpp",
               "RelativeDocumentMoniker": "main.cpp",
               "ToolTip": "C:\\Users\\supgo\\source\\repos\\Simba\\main.cpp",
               "RelativeToolTip": "main.cpp",
-              "ViewState": "AgIAAE8AAAAAAAAAAAAAACUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-10-20T15:29:54.179Z",
               "EditorCaption": ""
