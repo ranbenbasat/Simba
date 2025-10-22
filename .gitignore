@@ -389,3 +389,17 @@ FodyWeavers.xsd
 /Simba/x64/Release/Simba.tlog/CL.write.1.tlog
 /Simba/x64/Release/vc143.pdb
 /Simba/x64/Release/Simba.tlog/link.read.1.tlog
+/Simba/x64/Release/Simba.tlog/CL.command.1.tlog
+/.vs/Simba/v17/ipch/AutoPCH/f372b4e452285022/MAIN.ipch
+/.vs/Simba/CopilotIndices/0.2.1653.9816/SemanticSymbols.db
+/.vs/Simba/CopilotIndices/0.2.1653.9816/SemanticSymbols.db-wal
+/.vs/Simba/v17/ipch/AutoPCH/bcae8b0c1cb0b7d9/SIMBA.ipch
+/.vs/Simba/v17/ipch/AutoPCH/5cbc504d7214e090/MAIN.ipch
+/Simba/python_bindings/build/lib.win-amd64-3.9/simba_cpp.cp39-win_amd64.pyd
+/Simba/python_bindings/build/defs.obj
+/Simba/python_bindings/build/Simba.obj
+/Simba/python_bindings/build/temp.win-amd64-3.9/Release/.ninja_deps
+/Simba/python_bindings/build/temp.win-amd64-3.9/Release/.ninja_log
+/Simba/python_bindings/build/temp.win-amd64-3.9/Release/python_bindings.obj
+/Simba/python_bindings/dist/simba_cpp-0.0.0-py3.9-win-amd64.egg
+/debug_simba.py

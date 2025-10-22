@@ -1,6 +1,0 @@
-# ninja log v5
-11	620	7826783067221090	C:/Users/supgo/source/repos/Simba/Simba/python_bindings/build/defs.obj	1072fe356ccdd1f9
-1	664	7826783067221090	C:/Users/supgo/source/repos/Simba/Simba/python_bindings/build/Simba.obj	f2d34e9c2b5818
-14	11614	7826783174745179	C:/Users/supgo/source/repos/Simba/Simba/python_bindings/build/temp.win-amd64-3.9/Release/python_bindings.obj	80de16d38db7f4a9
-188	718	7826785651608131	C:/Users/supgo/source/repos/Simba/Simba/python_bindings/build/Simba.obj	f2d34e9c2b5818
-193	10508	7826785747269876	C:/Users/supgo/source/repos/Simba/Simba/python_bindings/build/temp.win-amd64-3.9/Release/python_bindings.obj	80de16d38db7f4a9
