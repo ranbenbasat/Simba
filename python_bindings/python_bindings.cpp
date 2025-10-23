@@ -23,7 +23,6 @@ torch::Tensor quiver_exact_accelerated(torch::Tensor svec, int s) {
     return tQ;
 }
 
-
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
@@ -97,4 +96,3 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
     m.def("quiver_approx", &quiver_approx, "quiver_approx");
     m.def("simba", &simba, "simba");
 }
-
