@@ -91,8 +91,89 @@ torch::Tensor simba(torch::Tensor svec, int s, int q, int iters, int bin_iters, 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
+torch::Tensor sq_vnmse_tensor(torch::Tensor X, torch::Tensor Q, py::object W = py::none()) {
+    TORCH_CHECK(X.device().type() == torch::kCPU, "the input vector must be a kCPU tensor");
+    TORCH_CHECK(X.dtype() == torch::kFloat64, "the input vector must be a double (kFloat64)");
+    TORCH_CHECK(X.size(-1) == X.numel(), "the input vector must be 1D");
+    TORCH_CHECK(X.is_contiguous(), "the input vector must be contiguous in memory");
+    
+    TORCH_CHECK(Q.device().type() == torch::kCPU, "the quantization vector must be a kCPU tensor");
+    TORCH_CHECK(Q.dtype() == torch::kFloat64, "the quantization vector must be a double (kFloat64)");
+    TORCH_CHECK(Q.size(-1) == Q.numel(), "the quantization vector must be 1D");
+    TORCH_CHECK(Q.is_contiguous(), "the quantization vector must be contiguous in memory");
+    
+    std::vector<double> X_vec(X.data_ptr<double>(), X.data_ptr<double>() + X.numel());
+    std::vector<double> Q_vec(Q.data_ptr<double>(), Q.data_ptr<double>() + Q.numel());
+    
+    double result;
+    if (!W.is_none()) {
+        torch::Tensor W_tensor = W.cast<torch::Tensor>();
+        TORCH_CHECK(W_tensor.device().type() == torch::kCPU, "the weight vector must be a kCPU tensor");
+        TORCH_CHECK(W_tensor.dtype() == torch::kFloat64, "the weight vector must be a double (kFloat64)");
+        TORCH_CHECK(W_tensor.size(-1) == W_tensor.numel(), "the weight vector must be 1D");
+        TORCH_CHECK(W_tensor.is_contiguous(), "the weight vector must be contiguous in memory");
+        std::vector<double> W_vec(W_tensor.data_ptr<double>(), W_tensor.data_ptr<double>() + W_tensor.numel());
+        result = sq_vnmse(X_vec, Q_vec, &W_vec);
+    } else {
+        result = sq_vnmse(X_vec, Q_vec, nullptr);
+    }
+    
+    return torch::tensor(result, torch::kFloat64);
+}
+
+torch::Tensor calc_SR_vNMSE_tensor(torch::Tensor X, torch::Tensor Q, double snorm = -1.0) {
+    TORCH_CHECK(X.device().type() == torch::kCPU, "the input vector must be a kCPU tensor");
+    TORCH_CHECK(X.dtype() == torch::kFloat64, "the input vector must be a double (kFloat64)");
+    TORCH_CHECK(X.size(-1) == X.numel(), "the input vector must be 1D");
+    TORCH_CHECK(X.is_contiguous(), "the input vector must be contiguous in memory");
+    
+    TORCH_CHECK(Q.device().type() == torch::kCPU, "the quantization matrix must be a kCPU tensor");
+    TORCH_CHECK(Q.dtype() == torch::kFloat64, "the quantization matrix must be a double (kFloat64)");
+    TORCH_CHECK(Q.is_contiguous(), "the quantization matrix must be contiguous in memory");
+    
+    std::vector<double> X_vec(X.data_ptr<double>(), X.data_ptr<double>() + X.numel());
+    
+    // Convert Q tensor to vector<vector<double>>
+    std::vector<std::vector<double>> Q_vec;
+    if (Q.dim() == 1) {
+        // Single quantization vector
+        Q_vec.resize(1);
+        Q_vec[0] = std::vector<double>(Q.data_ptr<double>(), Q.data_ptr<double>() + Q.numel());
+    } else if (Q.dim() == 2) {
+        // Multiple quantization vectors
+        int rows = Q.size(0);
+        int cols = Q.size(1);
+        Q_vec.resize(rows);
+        for (int i = 0; i < rows; ++i) {
+            Q_vec[i] = std::vector<double>(Q[i].data_ptr<double>(), Q[i].data_ptr<double>() + cols);
+        }
+    } else {
+        TORCH_CHECK(false, "Q must be 1D or 2D tensor");
+    }
+    
+    double result = calc_SR_vNMSE(X_vec, Q_vec, snorm);
+    return torch::tensor(result, torch::kFloat64);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
-    m.def("quiver_exact_accelerated", &quiver_exact_accelerated, "quiver_exact_accelerated");
-    m.def("quiver_approx", &quiver_approx, "quiver_approx");
-    m.def("simba", &simba, "simba");
+    m.def("quiver_exact_accelerated", &quiver_exact_accelerated, 
+          py::arg("svec"), py::arg("s"));
+    
+    m.def("quiver_approx", &quiver_approx, 
+          py::arg("svec"), py::arg("s"), py::arg("m"));
+    
+    m.def("simba", &simba, 
+          py::arg("svec"), py::arg("s"), py::arg("q"), py::arg("iters"), 
+          py::arg("bin_iters"), py::arg("bin_iters_increase_threshold"), 
+          py::arg("stopping_threshold"), py::arg("m_quiver"), 
+          py::arg("debug") = false, py::arg("log_cost_fn") = "");
+    
+    m.def("sq_vnmse", &sq_vnmse_tensor, 
+          py::arg("X"), py::arg("Q"), py::arg("W") = py::none());
+    
+    m.def("calc_SR_vNMSE", &calc_SR_vNMSE_tensor, 
+          py::arg("X"), py::arg("Q"), py::arg("snorm") = -1.0);
 }
