@@ -1,5 +1,0 @@
-torch
-numpy
-ninja
-scipy
-

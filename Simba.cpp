@@ -5,8 +5,7 @@
 */
 void Simba::calcThresholds(int changed_h, int changed_q)
 {
-    if (changed_q == -1)
-    {
+    if (changed_q == -1) {
         double T = 0;
         for (int j = 1; j < ell; ++j) {
             T += Q[j][0];
@@ -30,9 +29,7 @@ void Simba::calcThresholds(int changed_h, int changed_q)
             }
         }
         new_threshold_indices[ell * (s - 1) - 1] = d - 1; //The last threshold should include the end of the vector, this avoids numerical issues.
-    }
-    else
-    {
+    } else {
         int changed_j = changed_h + changed_q * ell;
         int first_changed_i = changed_j > ell ? changed_j - (ell - 1) : 1;
         double T = 0;
@@ -53,13 +50,11 @@ void Simba::calcThresholds(int changed_h, int changed_q)
         new_threshold_indices[ell * (s - 1) - 1] = d - 1;
         threshold_values[ell * (s - 1) - 1] = maxX;
     }
-    return;
 }
 
 void Simba::calcBetas() {
     int N = new_threshold_indices.size();
     if (N == 0) return;
-
     // compute betai[0] from scratch
     double sum = 0;
     for (int h = 0; h < ell; ++h) {
@@ -68,7 +63,6 @@ void Simba::calcBetas() {
         sum += v * v;
     }
     betai[0] = sum;
-
     // roll-forward: only j0 = (i+1)%ell changes its index
     for (int i = 0; i + 1 < N; ++i) {
         int j0 = (i + 1) % ell;
@@ -91,11 +85,9 @@ void Simba::updateBetas(int h, int q, double oldval, double newval) {
     // solve (i + ell - j) / ell == q  =>  (q-1)*ell + j <= i < q*ell + j
     int i_start = (q - 1) * ell + h;
     int i_end = q * ell + h;
-
     // clamp to valid range
     if (i_start < 0)    i_start = 0;
     if (i_end > N)    i_end = N;
-
     // update only those betai[i] that include levels[j][q]^2
     for (int i = i_start; i < i_end; ++i) {
         betai[i] += diff;

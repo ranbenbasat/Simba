@@ -22,7 +22,7 @@ const double one_plus_eps = 1.0000000001;
 double sq_vnmse(vector<double>& X, vector<double>& Q, vector<double>* W); // Used for ASQ methods (without shared randomness)
 
 double calc_SR_vNMSE(const std::vector<double>& X, // Used for AUQ methods (with shared randomness)
-	const std::vector<std::vector<double>>& Q,
-	double snorm = -1.0);
+    const std::vector<std::vector<double>>& Q,
+    double snorm = -1.0);
 
-#endif // !DEFS_H#pragma once
+#endif // !DEFS_H

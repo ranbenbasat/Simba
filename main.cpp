@@ -7,8 +7,6 @@
 #include <random>
 #include "Simba.h"
 
-
-
 int main()
 {
     {
@@ -16,7 +14,6 @@ int main()
         generator.seed(42);
 
         int n = 1 << 20;
-
         int s = 4;
         int m_QUIVER = 1000;
         int M_QUIVER_for_Simba_Initialization = 1000;
@@ -25,23 +22,19 @@ int main()
 
         bool run_QUIVER = true;
         bool run_ApxQUIVER = true;
-
-
         bool run_Simba = true;
 
         string log_cost_fn = "";
-
         auto start = chrono::high_resolution_clock::now();
         auto stop = chrono::high_resolution_clock::now();
-
         bool debug = false;
-		bool truncate = false;     // For optimizing the tables for QUIC-FL
+        bool truncate = false;     // For optimizing the tables for QUIC-FL
         double T_Truncate = 3.097; // Default value for QUIC-FL
         int bin_iters = 2;
         double bin_iters_increase_threshold = .99;
         double stopping_threshold = .999;
 
-		if (truncate) {             // For optimizing the tables for QUIC-FL, this is an offline computation, and we can thus spend more time optimizing
+        if (truncate) {             // For optimizing the tables for QUIC-FL, this is an offline computation, and we can thus spend more time optimizing
             bin_iters = 4;
             bin_iters_increase_threshold = .999;
             stopping_threshold = .99999;
@@ -66,15 +59,12 @@ int main()
         unsorted_X.resize(idx + 1);
         X.resize(idx + 1);
         cout << "norm = " << norm << endl;
-
         start = chrono::high_resolution_clock::now();
         partial_sort_copy(unsorted_X.begin(), unsorted_X.end(), X.begin(), X.end());
         stop = chrono::high_resolution_clock::now();
         auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
         cout << "partial_sort_copy time: " << duration.count() / 1000 << " ms" << endl;
-
         double vnmse;
-
         if (run_QUIVER) {
             start = chrono::high_resolution_clock::now();
             ExactQUIVER<false, true> aeq(X.data(), (uint32_t)n, nullptr);
@@ -127,7 +117,7 @@ int main()
             auto Q = As.calcQuantizationValues(X.data(), X.size(), s, ell, iters, bin_iters, bin_iters_increase_threshold, stopping_threshold, debug, initial_Q.data(), log_cost_fn);
             stop = chrono::high_resolution_clock::now();
 
-			std::vector<std::vector<double>> vec_Q; // reformat Q for calc_SR_vNMSE
+            std::vector<std::vector<double>> vec_Q; // reformat Q for calc_SR_vNMSE
             for (int i = 0; i < ell; ++i) {
                 std::vector<double> v;
                 for (int j = 0; j < s; ++j) {
@@ -156,7 +146,7 @@ int main()
             cout << "], vnmse = " << vnmse << endl;
             auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
             cout << "Simba time: " << duration.count() / 1000 << " ms" << endl;
-        }   
+        }
     }
 
     // Check for memory leaks: send all reports to STDOUT
@@ -170,5 +160,3 @@ int main()
 
     return 0;
 }
-
-

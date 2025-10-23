@@ -6,7 +6,7 @@
 
 
 // Compute thresholds from Q.
-// Assumes Q is an ell×s matrix.
+// Assumes Q is an ellï¿½s matrix.
 std::vector<double> calcThresholds(const std::vector<std::vector<double>>& Q) {
 	int ell = Q.size();
 	int s = Q[0].size();
@@ -43,41 +43,32 @@ double calcNormSquared(const std::vector<double>& vec) {
 
 double sq_mse(vector<double> X, vector<double> Q, vector<double>* W = nullptr)
 {
-	int curr_sqv_index = 0;
-	double mse = 0;
+    int curr_sqv_index = 0;
+    double mse = 0;
+    for (int i = 0; i < X.size(); ++i) {
+        while (X[i] > Q[curr_sqv_index + 1]) {
+            curr_sqv_index++;
+        }
+        double w = W ? (*W)[i] : 1;
+        mse += (X[i] - Q[curr_sqv_index]) * (Q[curr_sqv_index + 1] - X[i]) * w;
+    }
 
-
-	for (int i = 0; i < X.size(); ++i)
-	{
-		while (X[i] > Q[curr_sqv_index + 1])
-		{
-			curr_sqv_index++;
-		}
-		double w = W ? (*W)[i] : 1;
-		mse += (X[i] - Q[curr_sqv_index]) * (Q[curr_sqv_index + 1] - X[i]) * w;
-	}
-
-	return mse;
+    return mse;
 }
 
 double sq_vnmse(vector<double>& X, vector<double>& Q, vector<double>* W = nullptr)
 {
-	double snorm = 0;
-
-	if (W) {
-		for (int i = 0; i < X.size(); ++i)
-		{
-			snorm += X[i] * X[i] * (*W)[i];
-		}
-	}
-	else {
-		for (int i = 0; i < X.size(); ++i)
-		{
-			snorm += X[i] * X[i];
-		}
-	}
-
-	return sq_mse(X, Q, W) / snorm;
+    double snorm = 0;
+    if (W) {
+        for (int i = 0; i < X.size(); ++i) {
+            snorm += X[i] * X[i] * (*W)[i];
+        }
+    } else {
+        for (int i = 0; i < X.size(); ++i) {
+            snorm += X[i] * X[i];
+        }
+    }
+    return sq_mse(X, Q, W) / snorm;
 }
 
 // Main function: computes vMSE from vec and sqv.
@@ -120,8 +111,8 @@ double calc_SR_vNMSE(const std::vector<double>& X,
 		}
 	}
 
-	double sum_MSE = 0.0;
-	// For each element compute x_p, p_up, sq_err and MSE.
+    double sum_MSE = 0.0;
+    // For each element compute x_p, p_up, sq_err and MSE.
 	for (int i = 0; i < d; ++i) {
 		double x_p = q * X[i] - det_sum[i];
 		int h = H[i];
@@ -134,10 +125,6 @@ double calc_SR_vNMSE(const std::vector<double>& X,
 		sum_MSE += MSE;
 	}
 
-	double norm_sq = (snorm < 0) ? calcNormSquared(X) : snorm;
-	return sum_MSE / norm_sq;
+    double norm_sq = (snorm < 0) ? calcNormSquared(X) : snorm;
+    return sum_MSE / norm_sq;
 }
-
-
-
-
