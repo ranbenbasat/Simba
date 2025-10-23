@@ -44,7 +44,7 @@ torch::Tensor quiver_approx(torch::Tensor svec, int s, int m) {
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
-torch::Tensor simba(torch::Tensor svec, int s, int q, int iters, int bin_iters, double bin_iters_increase_threshold, double stopping_threshold, int m_quiver, bool debug, string log_cost_fn = "") {
+torch::Tensor simba(torch::Tensor svec, int s, int l, int iters, int bin_iters, double bin_iters_increase_threshold, double stopping_threshold, int m_quiver, bool debug, string log_cost_fn = "") {
 
     TORCH_CHECK(svec.device().type() == torch::kCPU, "the input vector must be a kCPU tensor");
     TORCH_CHECK(svec.dtype() == torch::kFloat64, "the input vector must be a double (kFloat64)");
@@ -58,10 +58,10 @@ torch::Tensor simba(torch::Tensor svec, int s, int q, int iters, int bin_iters, 
         if (iters == 0) {
             return torch::zeros(s, torch::kFloat64);
         }
-        auto Q = S.calcQuantizationValues(svec.data_ptr<double>(), svec.numel(), s, q, iters, bin_iters, bin_iters_increase_threshold, stopping_threshold, debug, initial_levels.data_ptr<double>(), log_cost_fn);
-        if (q > 1) {
-            auto tQ = torch::zeros({q, s}, torch::kFloat64);
-            for (int i = 0; i < q; ++i) {
+        auto Q = S.calcQuantizationValues(svec.data_ptr<double>(), svec.numel(), s, l, iters, bin_iters, bin_iters_increase_threshold, stopping_threshold, debug, initial_levels.data_ptr<double>(), log_cost_fn);
+        if (l > 1) {
+            auto tQ = torch::zeros({l, s}, torch::kFloat64);
+            for (int i = 0; i < l; ++i) {
                 memcpy(tQ[i].data_ptr(), Q[i].data(), sizeof(double) * s);
             }
             return tQ;
@@ -74,10 +74,10 @@ torch::Tensor simba(torch::Tensor svec, int s, int q, int iters, int bin_iters, 
         if (iters == 0) {
             return torch::zeros(s, torch::kFloat64);
         }
-        auto Q = S.calcQuantizationValues(svec.data_ptr<double>(), svec.numel(), s, q, iters, bin_iters, bin_iters_increase_threshold, stopping_threshold, debug, initial_levels.data_ptr<double>(), log_cost_fn);
-        if (q > 1) {
-            auto tQ = torch::zeros({q, s}, torch::kFloat64);
-            for (int i = 0; i < q; ++i) {
+        auto Q = S.calcQuantizationValues(svec.data_ptr<double>(), svec.numel(), s, l, iters, bin_iters, bin_iters_increase_threshold, stopping_threshold, debug, initial_levels.data_ptr<double>(), log_cost_fn);
+        if (l > 1) {
+            auto tQ = torch::zeros({l, s}, torch::kFloat64);
+            for (int i = 0; i < l; ++i) {
                 memcpy(tQ[i].data_ptr(), Q[i].data(), sizeof(double) * s);
             }
             return tQ;
