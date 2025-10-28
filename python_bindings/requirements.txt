@@ -1,0 +1,8 @@
+torch
+numpy<2
+ninja
+scipy
+setuptools
+matplotlib
+pandas
+seaborn
